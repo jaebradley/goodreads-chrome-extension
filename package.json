@@ -1,7 +1,7 @@
 {
-  "name": "draftkings-chrome-extension",
+  "name": "goodreads-chrome-extension",
   "version": "0.0.0-development",
-  "description": "DraftKings Chrome Extension",
+  "description": "Goodreads Chrome Extension",
   "main": "index.js",
   "engines": {
     "node": "10.14.1",
@@ -20,14 +20,14 @@
     "travis-deploy-once": "travis-deploy-once"
   },
   "keywords": [
-    "draftkings",
+    "goodreads",
     "chrome"
   ],
   "author": "jae.b.bradley@gmail.com",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jaebradley/draftkings-chrome-extension.git"
+    "url": "https://github.com/jaebradley/goodreads-chrome-extension.git"
   },
   "devDependencies": {
     "@babel/cli": "^7.1.5",
