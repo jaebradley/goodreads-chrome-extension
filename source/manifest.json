@@ -1,0 +1,43 @@
+{
+	"name": "Goodreads Chrome Extension",
+	"version": "1.0.0",
+	"description": "Goodreads Chrome Extension",
+	"homepage_url": "https://github.com/jaebradley/goodreads-chrome-extension",
+	"manifest_version": 2,
+	"minimum_chrome_version": "58",
+	"permissions": [
+    "*://amazon.com/*",
+    "https://www.goodreads.com/oauth/*",
+    "https://www.goodreads.com/api/*",
+    "localhost:3000/*",
+		"tabs",
+    "webNavigation",
+    "identity",
+    "storage"
+	],
+	"optional_permissions": [
+		"http://*/*",
+		"https://*/*"
+	],
+	"background": {
+		"scripts": [
+			"background.js"
+		],
+		"persistent": false
+	},
+	"content_scripts": [
+		{
+			"run_at": "document_start",
+			"matches": [
+				"*://www.amazon.com/*"
+			],
+			"js": [
+        "content.js",
+        "popup.js"
+			]
+		}
+  ],
+  "browser_action": {
+    "default_popup": "popup.html"
+  }
+}
