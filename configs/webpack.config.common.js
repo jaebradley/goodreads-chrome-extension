@@ -31,17 +31,8 @@ module.exports = {
       },
       {
         test: /\.svg$/,
-        use: [
-          {
-            loader: 'babel-loader',
-          },
-          {
-            loader: 'react-svg-loader',
-            options: {
-              jsx: true,
-            },
-          },
-        ],
+        exclude: /node_modules/,
+        use: 'svg-react-loader',
       },
     ],
   },

@@ -15,5 +15,5 @@ export default function App() {
       { !jwt && <Login /> }
       { !!jwt && <UserDetails jwt={jwt} /> }
     </div>
-  )
+  );
 }
