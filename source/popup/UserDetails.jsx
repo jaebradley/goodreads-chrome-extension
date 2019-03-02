@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import axios from 'axios';
+
+const {
+  GOODREADS_SERVER_BASE_URL,
+} = process.env;
 
 function useEffectAsync(effect, inputs) {
   useEffect(() => { effect(); }, inputs);
 }
 
-export default function UserDetails({ jwt }) {
+function UserDetails({ jwt }) {
   const [
     data,
     setData,
@@ -15,7 +20,7 @@ export default function UserDetails({ jwt }) {
     // TODO: @jaebradley add error handling and a loader
     if (jwt) {
       const result = await axios.get(
-        'http://localhost:3000/api/user',
+        `${GOODREADS_SERVER_BASE_URL}/api/user`,
         {
           headers: {
             Authorization: `Bearer ${jwt}`,
@@ -25,13 +30,21 @@ export default function UserDetails({ jwt }) {
 
       setData({ name: result.data.user.name });
     }
-  };
+  }
 
   useEffectAsync(fetchData, [jwt]);
 
   return (
     <div>
-      { data.name } is logged in!
+      { data.name }
+      &nbsp;
+      is logged in!
     </div>
   );
 }
+
+UserDetails.propTypes = {
+  jwt: PropTypes.string.isRequired,
+};
+
+export default UserDetails;

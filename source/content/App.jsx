@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
 
-import identifyISBN13 from '../content/identifyISBN13';
+import identifyISBN13 from './identifyISBN13';
 import useAsyncEffect from '../utilities/useAsyncEffect';
 
 import Review from './Review';
@@ -18,8 +17,8 @@ export default function App() {
   ] = useState('');
 
   async function identifyISBN() {
-    const isbn = await identifyISBN13();
-    setISBN(isbn);
+    const isbn13 = await identifyISBN13();
+    setISBN(isbn13);
   }
 
   useEffect(() => chrome.storage.sync.get(result => setJWT(result.jwt)));
@@ -36,5 +35,5 @@ export default function App() {
         )
       }
     </div>
-  )
+  );
 }

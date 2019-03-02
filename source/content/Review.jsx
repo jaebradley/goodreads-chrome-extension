@@ -1,10 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import Ratings from 'react-ratings-declarative';
+import PropTypes from 'prop-types';
 
 import useAsyncEffect from '../utilities/useAsyncEffect';
 
-export default function Review({ isbn, jwt }) {
+const {
+  GOODREADS_SERVER_BASE_URL,
+} = process.env;
+
+function Review({ isbn, jwt }) {
   const [
     reviewStatistics,
     setReviewStatistics,
@@ -14,7 +19,7 @@ export default function Review({ isbn, jwt }) {
     // TODO: @jaebradley add error handling and a loader
     if (jwt && isbn) {
       const result = await axios.get(
-        'http://localhost:3000/api/book/review_statistics',
+        `${GOODREADS_SERVER_BASE_URL}/api/book/review_statistics`,
         {
           params: { isbn },
           headers: {
@@ -28,32 +33,41 @@ export default function Review({ isbn, jwt }) {
         reviewsCount: result.data.text_reviews_count,
       });
     }
-  };
+  }
 
   useAsyncEffect(fetchRating, [isbn, jwt]);
 
   return (
     <div>
       <Ratings
-        widgetRatedColors={'#fb0'}
+        widgetRatedColors="#fb0"
         rating={Number(reviewStatistics.averageRating)}
-        widgetDimensions={'16px'}
-        widgetSpacings={'0px'}
+        widgetDimensions="16px"
+        widgetSpacings="0px"
       >
-        <Ratings.Widget/>
-        <Ratings.Widget/>
-        <Ratings.Widget/>
-        <Ratings.Widget/>
-        <Ratings.Widget/>
+        <Ratings.Widget />
+        <Ratings.Widget />
+        <Ratings.Widget />
+        <Ratings.Widget />
+        <Ratings.Widget />
       </Ratings>
       &nbsp;
       <span>
-        ({ reviewStatistics.averageRating })
+        { `${(reviewStatistics.averageRating)}` }
       </span>
       &nbsp;
       <span>
-        { reviewStatistics.reviewsCount } reviews
+        { reviewStatistics.reviewsCount }
+        &nbsp;
+        reviews
       </span>
     </div>
   );
 }
+
+Review.propTypes = {
+  isbn: PropTypes.string.isRequired,
+  jwt: PropTypes.string.isRequired,
+};
+
+export default Review;
