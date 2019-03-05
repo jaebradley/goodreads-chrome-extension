@@ -24,7 +24,7 @@ async function inject() {
       const isbn = await identifyISBN13();
       const {
         bookId,
-        bookReviewResponse,
+        bookReview,
         bookReviewStatistics,
       } = await getSingleBookPageData({ jwt, isbn });
 
@@ -34,7 +34,7 @@ async function inject() {
       ReactDOM.render(
         <App
           bookId={bookId}
-          bookReviewResponse={bookReviewResponse}
+          bookReview={bookReview}
           bookReviewStatistics={bookReviewStatistics}
           isbn={isbn}
         />,

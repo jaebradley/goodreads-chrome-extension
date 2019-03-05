@@ -1,4 +1,5 @@
 import createClient from '../../createClient';
+import parseReviewResponse from './parseReviewResponse';
 
 export default async function getSingleBookPageData({ jwt, isbn }) {
   const client = createClient({ jwt });
@@ -17,13 +18,16 @@ export default async function getSingleBookPageData({ jwt, isbn }) {
     average_rating: averageRating,
     work_text_reviews_count: reviewsCount,
   } = bookReviewStatisticsResponse.data;
+  const bookReview = bookReviewResponse
+    ? parseReviewResponse(bookReviewResponse.data.GoodreadsResponse.review)
+    : null;
 
   return {
-    bookId,
-    bookReviewResponse,
+    bookId: Number(bookId),
+    bookReview,
     bookReviewStatistics: {
-      averageRating,
-      reviewsCount,
+      averageRating: Number(averageRating),
+      reviewsCount: Number(reviewsCount),
     },
   };
 }

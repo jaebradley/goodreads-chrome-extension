@@ -38,7 +38,7 @@ function Review({ bookId, bookReviewStatistics }) {
 }
 
 Review.propTypes = {
-  bookId: PropTypes.string.isRequired,
+  bookId: PropTypes.number.isRequired,
   bookReviewStatistics: PropTypes.shape({
     averageRating: PropTypes.number,
     reviewsCount: PropTypes.number,
