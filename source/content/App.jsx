@@ -3,9 +3,12 @@ import 'semantic-ui-css/semantic.min.css';
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Icon } from 'semantic-ui-react';
+import {
+  Icon,
+} from 'semantic-ui-react';
 
 import Review from './Review';
+import Shelves from './Shelves';
 
 function App({
   bookId,
@@ -24,14 +27,9 @@ function App({
         />
         &nbsp;
         {
-          !!bookReview && (
-            <span
-              role="img"
-              aria-label="checkmark"
-            >
-              ✅
-            </span>
-          )
+          bookReview
+            && bookReview.shelves
+            && <Shelves shelves={bookReview.shelves} />
         }
       </div>
     </div>
