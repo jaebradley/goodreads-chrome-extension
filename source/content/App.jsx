@@ -1,8 +1,11 @@
+import 'semantic-ui-css/semantic.min.css';
+
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { Icon } from 'semantic-ui-react';
+
 import Review from './Review';
-import GoodreadsLogo from './images/goodreads-logo.svg';
 
 function App({
   bookId,
@@ -12,8 +15,8 @@ function App({
 }) {
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
-        <GoodreadsLogo style={{ width: '20px', height: '20px', paddingRight: '4px' }} />
+      <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
+        <Icon name="goodreads" size="big" />
         <Review
           isbn={isbn}
           bookId={bookId}

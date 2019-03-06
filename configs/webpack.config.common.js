@@ -22,17 +22,40 @@ module.exports = {
     rules: [
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        use: [
+          {
+            loader: 'style-loader',
+            options: {
+              insertInto: 'html',
+            },
+          },
+          'css-loader',
+        ],
       },
       {
         test: /\.jsx?/,
         exclude: /node_modules/,
         loader: 'babel-loader',
       },
+      // Load in-line so that don't have to specify web-accessible fonts, etc.
       {
-        test: /\.svg$/,
-        exclude: /node_modules/,
-        use: 'svg-react-loader',
+        test: /\.(woff(2)?|ttf|eot)(\?v=\d+\.\d+\.\d+)?$/,
+        use: [{
+          loader: 'url-loader',
+        }],
+      },
+      {
+        test: /\.(gif|png|jpe?g|svg)$/i,
+        use: [
+          'url-loader',
+          {
+            loader: 'image-webpack-loader',
+            options: {
+              bypassOnDebug: true,
+              disable: true,
+            },
+          },
+        ],
       },
     ],
   },
