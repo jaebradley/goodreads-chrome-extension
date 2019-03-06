@@ -50,15 +50,19 @@
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.12.4",
+    "extract-css-chunks-webpack-plugin": "^4.0.0",
+    "file-loader": "^3.0.1",
     "fs-extra": "^7.0.1",
     "hard-source-webpack-plugin": "^0.12.0",
     "husky": "^1.2.0",
+    "image-webpack-loader": "^4.6.0",
     "jest": "^24.1.0",
     "semantic-release": "^15.12.1",
     "style-loader": "^0.23.1",
     "svg-react-loader": "^0.4.6",
     "travis-deploy-once": "^5.0.9",
     "uglifyjs-webpack-plugin": "^2.0.1",
+    "url-loader": "^1.1.2",
     "webpack": "^4.26.0",
     "webpack-build-notifier": "^0.1.30",
     "webpack-bundle-analyzer": "^3.0.3",
@@ -70,16 +74,13 @@
   "dependencies": {
     "@babel/runtime": "^7.1.5",
     "axios": "^0.18.0",
-    "chart.js": "^2.7.3",
     "chrome-storage-promise": "^0.1.0",
     "dom-loaded": "^1.0.1",
-    "oauth": "^0.9.15",
-    "oauth-1.0a": "^2.2.5",
     "prop-types": "^15.7.2",
     "query-string": "^6.2.0",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
-    "react-ratings-declarative": "^3.4.1",
-    "tippy.js": "^3.2.0"
+    "semantic-ui-css": "^2.4.1",
+    "semantic-ui-react": "^0.85.0"
   }
 }
