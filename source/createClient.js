@@ -28,6 +28,9 @@ export default function createClient({ jwt }) {
       books: {
         getReview: bookId => instance.get(`/user/books/${bookId}/review`),
       },
+      shelves: {
+        addBook: ({ shelfName, bookId }) => instance.post(`/user/shelves/${shelfName}/books`, { bookId }),
+      },
     },
   };
 }
