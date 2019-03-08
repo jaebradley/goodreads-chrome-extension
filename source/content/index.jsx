@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom';
 import domLoaded from 'dom-loaded';
 import App from './App';
 import identifyISBN13 from './identifyISBN13';
-import getSingleBookPageData from './data/getSingleBookPageData';
 
 async function inject() {
   await domLoaded;
@@ -17,17 +16,15 @@ async function inject() {
 
 
   if (element) {
-    chrome.storage.sync.get(async (result) => {
-      const {
-        jwt,
-      } = result;
-      const isbn = await identifyISBN13();
+    const isbn = await identifyISBN13();
+    const port = chrome.runtime.connect({ name: 'BOOK_PAGE_DATA' });
+    port.postMessage({ isbn });
+    port.onMessage.addListener((message) => {
       const {
         bookId,
         bookReview,
         bookReviewStatistics,
-      } = await getSingleBookPageData({ jwt, isbn });
-
+      } = message;
       const appDiv = document.createElement('div');
       appDiv.setAttribute('id', 'goodreads-extension');
       element.parentNode.insertBefore(appDiv, element.nextSibling);
