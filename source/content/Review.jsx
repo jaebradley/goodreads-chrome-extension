@@ -35,9 +35,17 @@ function Review({ bookId, bookReviewStatistics }) {
             {
               Object
                 .keys(ShelfNames)
-                .map(key => (
-                  <Form.Field label={ShelfNames[key]} value={ShelfNames[key]} control="input" type="radio" name="htmlRadios" />
-                ))
+                .map((key) => {
+                  const shelfName = ShelfNames[key];
+                  return (
+                    <Form.Radio
+                      label={shelfName}
+                      value={shelfName}
+                      name="shelves"
+                      onClick={() => chrome.runtime.sendMessage({ method: 'ADD_BOOK_TO_SHELF', data: { shelfName, bookId } })}
+                    />
+                  );
+                })
             }
           </Form.Group>
         </Form>
