@@ -1,5 +1,22 @@
 /* eslint no-underscore-dangle: 0 */
 
+function parseAttributes(attributes) {
+  return {
+    id: Number(attributes.id),
+    name: attributes.name,
+  };
+}
+
+// handle single shelf (object)
+// and multiple shelves (array)
+function parseShelf(shelves) {
+  if (Array.isArray(shelves)) {
+    return shelves.map(shelf => parseAttributes(shelf._attributes));
+  }
+
+  return [parseAttributes(shelves._attributes)];
+}
+
 export default function parseReviewResponse(review) {
   return {
     id: Number(review.id._text),
@@ -11,9 +28,6 @@ export default function parseReviewResponse(review) {
     },
     dateAdded: new Date(review.date_added._text),
     startedAt: new Date(review.started_at._text),
-    shelves: review.shelves.shelf.map(shelf => ({
-      id: Number(shelf._attributes.id),
-      name: shelf._attributes.name,
-    })),
+    shelves: parseShelf(review.shelves.shelf),
   };
 }

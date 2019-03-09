@@ -14,7 +14,6 @@ async function inject() {
     element = document.getElementById('averageCustomerReviews');
   }
 
-
   if (element) {
     const isbn = await identifyISBN13();
     const port = chrome.runtime.connect({ name: 'BOOK_PAGE_DATA' });
