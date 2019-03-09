@@ -25,7 +25,7 @@ const COLORS = [
 
 function Shelves({ shelves }) {
   return (
-    <Label.Group tag>
+    <Label.Group tag size="mini">
       {
         shelves.map((shelf, index) => {
           const colorIndex = index % COLORS.length;

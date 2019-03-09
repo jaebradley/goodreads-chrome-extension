@@ -9,6 +9,7 @@ import {
 
 import Review from './Review';
 import Shelves from './Shelves';
+import AddShelvesButton from './AddShelvesButton';
 
 function App({
   bookId,
@@ -17,21 +18,19 @@ function App({
   bookReview,
 }) {
   return (
-    <div>
-      <div style={{ display: 'flex', justifyContent: 'flex-start', alignItems: 'center' }}>
-        <Icon name="goodreads" size="big" />
-        <Review
-          isbn={isbn}
-          bookId={bookId}
-          bookReviewStatistics={bookReviewStatistics}
-        />
-        &nbsp;
-        {
-          bookReview
-            && bookReview.shelves
-            && <Shelves shelves={bookReview.shelves} />
-        }
-      </div>
+    <div style={{ display: 'flex', alignItems: 'center' }}>
+      <Icon name="goodreads" size="big" />
+      <AddShelvesButton bookId={bookId} />
+      <Review
+        isbn={isbn}
+        bookId={bookId}
+        bookReviewStatistics={bookReviewStatistics}
+      />
+      {
+        bookReview
+          && bookReview.shelves
+          && <Shelves shelves={bookReview.shelves} />
+      }
     </div>
   );
 }
