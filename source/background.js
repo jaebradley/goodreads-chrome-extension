@@ -1,6 +1,7 @@
 import 'chrome-storage-promise';
 import login from './login';
 import getSingleBookPageData from './content/data/getSingleBookPageData';
+import getSingleBookPageDataFromSearch from './content/data/getSingleBookPageDataFromSearch';
 import createClient from './createClient';
 
 chrome.runtime.onMessage.addListener(async (obj) => {
@@ -28,6 +29,18 @@ chrome.runtime.onConnect.addListener(async (port) => {
           jwt,
         } = await chrome.storage.promise.sync.get();
         const data = await getSingleBookPageData({ jwt, isbn });
+        port.postMessage(data);
+      });
+    } else if (port.name === 'BOOK_PAGE_DATA_FROM_SEARCH') {
+      port.onMessage.addListener(async (message) => {
+        const {
+          author,
+          title,
+        } = message;
+        const {
+          jwt,
+        } = await chrome.storage.promise.sync.get();
+        const data = await getSingleBookPageDataFromSearch({ jwt, title, author });
         port.postMessage(data);
       });
     }
