@@ -15,14 +15,16 @@ export default async function identifyISBN13() {
   const productDetailsTable = document.getElementById('productDetailsTable');
   if (productDetailsTable) {
     const rows = productDetailsTable.querySelectorAll('div[class="content"] > ul > li');
-    const isbn13Row = Array.from(rows).find(row => row.innerText.startsWith('ISBN-13:'));
-    if (isbn13Row) {
-      return isbn13Row.innerText.replace(new RegExp('^ISBN-13: '), '').replace('-', '').trim();
+    if (rows) {
+      const isbn13Row = Array.from(rows).find(row => row.innerText.startsWith('ISBN-13:'));
+      if (isbn13Row) {
+        return isbn13Row.innerText.replace(new RegExp('^ISBN-13: '), '').replace('-', '').trim();
+      }
+      const isbnRow = Array.from(rows).find(row => row.innerText.startsWith('Page Numbers Source ISBN:'));
+      if (isbnRow) {
+        return isbnRow.innerText.replace(new RegExp('^Page Numbers Source ISBN: '), '').replace('-', '').trim();
+      }
     }
-    const isbnRow = Array.from(rows).find(row => row.innerText.startsWith('Page Numbers Source ISBN:'));
-    return isbnRow.innerText.replace(new RegExp('^Page Numbers Source ISBN: '), '').replace('-', '').trim();
-
-    // Fallback to looking up author and title
   }
 
   return null;

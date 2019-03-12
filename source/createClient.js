@@ -22,6 +22,7 @@ export default function createClient({ jwt }) {
         search: ({ isbn }) => instance.get('/books/id/search', { params: { isbn } }),
       },
       getReviewStatistics: isbn => instance.get('/book/review_statistics', { params: { isbn } }),
+      search: ({ title, author }) => instance.get('/books/search', { params: { title, author } }),
     },
     user: {
       getDetails: () => instance.get('/user'),
