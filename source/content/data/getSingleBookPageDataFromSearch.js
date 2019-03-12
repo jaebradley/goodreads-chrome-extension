@@ -24,9 +24,9 @@ export default async function getSingleBookPageDataFromSearch({ jwt, title, auth
     bookReview,
     bookReviewStatistics: {
       // eslint-disable-next-line no-underscore-dangle
-      averageRating: Number(searchResponse.data.text_reviews_count._text),
+      averageRating: Number(searchResponse.data.average_rating._text),
       // eslint-disable-next-line no-underscore-dangle
-      reviewsCount: Number(searchResponse.data.average_rating._text),
+      reviewsCount: Number(searchResponse.data.text_reviews_count._text),
     },
   };
 }

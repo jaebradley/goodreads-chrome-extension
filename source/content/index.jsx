@@ -5,7 +5,9 @@ import ReactDOM from 'react-dom';
 
 import domLoaded from 'dom-loaded';
 import App from './App';
+import identifyAuthor from './identifyAuthor';
 import identifyISBN13 from './identifyISBN13';
+import identifyTitle from './identifyTitle';
 
 async function inject() {
   await domLoaded;
@@ -41,27 +43,32 @@ async function inject() {
         );
       });
     } else {
-      const port = browser.runtime.connect({ name: 'BOOK_PAGE_DATA_FROM_SEARCH' });
-      port.postMessage({ isbn });
-      port.onMessage.addListener((message) => {
-        const {
-          bookId,
-          bookReview,
-          bookReviewStatistics,
-        } = message;
-        const appDiv = document.createElement('div');
-        appDiv.setAttribute('id', 'goodreads-extension');
-        element.parentNode.insertBefore(appDiv, element.nextSibling);
-        ReactDOM.render(
-          <App
-            bookId={bookId}
-            bookReview={bookReview}
-            bookReviewStatistics={bookReviewStatistics}
-            isbn={isbn}
-          />,
-          appDiv,
-        );
-      });
+      const title = identifyTitle();
+      const author = identifyAuthor();
+
+      if (title && author) {
+        const port = browser.runtime.connect({ name: 'BOOK_PAGE_DATA_FROM_SEARCH' });
+        port.postMessage({ title, author });
+        port.onMessage.addListener((message) => {
+          const {
+            bookId,
+            bookReview,
+            bookReviewStatistics,
+          } = message;
+          const appDiv = document.createElement('div');
+          appDiv.setAttribute('id', 'goodreads-extension');
+          element.parentNode.insertBefore(appDiv, element.nextSibling);
+          ReactDOM.render(
+            <App
+              bookId={bookId}
+              bookReview={bookReview}
+              bookReviewStatistics={bookReviewStatistics}
+              isbn={isbn}
+            />,
+            appDiv,
+          );
+        });
+      }
     }
   }
 }
