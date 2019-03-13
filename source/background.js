@@ -1,4 +1,5 @@
-import 'chrome-storage-promise';
+import browser from 'webextension-polyfill';
+
 import login from './login';
 import getSingleBookPageData from './content/data/getSingleBookPageData';
 import getSingleBookPageDataFromSearch from './content/data/getSingleBookPageDataFromSearch';
@@ -11,7 +12,7 @@ chrome.runtime.onMessage.addListener(async (obj) => {
     } else if (obj.method === 'ADD_BOOK_TO_SHELF') {
       const {
         jwt,
-      } = await chrome.storage.promise.sync.get();
+      } = await browser.storage.sync.get();
       const client = createClient({ jwt });
       await client.user.shelves.addBook({ shelfName: obj.data.shelfName, bookId: obj.data.bookId });
     }
@@ -27,7 +28,7 @@ chrome.runtime.onConnect.addListener(async (port) => {
         } = message;
         const {
           jwt,
-        } = await chrome.storage.promise.sync.get();
+        } = await browser.storage.sync.get();
         const data = await getSingleBookPageData({ jwt, isbn });
         port.postMessage(data);
       });
@@ -39,7 +40,7 @@ chrome.runtime.onConnect.addListener(async (port) => {
         } = message;
         const {
           jwt,
-        } = await chrome.storage.promise.sync.get();
+        } = await browser.storage.sync.get();
         const data = await getSingleBookPageDataFromSearch({ jwt, title, author });
         port.postMessage(data);
       });
