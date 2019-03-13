@@ -74,7 +74,6 @@
   "dependencies": {
     "@babel/runtime": "^7.1.5",
     "axios": "^0.18.0",
-    "chrome-storage-promise": "^0.1.0",
     "dom-loaded": "^1.0.1",
     "prop-types": "^15.7.2",
     "query-string": "^6.2.0",

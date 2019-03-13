@@ -1,4 +1,5 @@
 import qs from 'query-string';
+import browser from 'webextension-polyfill';
 
 import getAccessToken from './getAccessToken';
 import getRequestToken from './getRequestToken';
@@ -15,15 +16,15 @@ export default async function login() {
   });
   const url = `https://goodreads.com/oauth/authorize?${authorizeQuery}`;
 
-  chrome.tabs.create({
+  const tab = await browser.tabs.create({
     url,
     active: true,
-  }, async (tab) => {
-    chrome.tabs.onUpdated.addListener(async (tabId, info) => {
-      if (info.status === 'complete' && tabId === tab.id) {
-        const jwt = await getAccessToken({ requestToken, requestTokenSecret });
-        chrome.storage.sync.set({ jwt });
-      }
-    });
+  });
+
+  browser.tabs.onUpdated.addListener(async (tabId, info) => {
+    if (info.status === 'complete' && tabId === tab.id) {
+      const jwt = await getAccessToken({ requestToken, requestTokenSecret });
+      await browser.storage.sync.set({ jwt });
+    }
   });
 }
