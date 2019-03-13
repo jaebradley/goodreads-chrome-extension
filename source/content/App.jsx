@@ -1,65 +1,99 @@
 import 'semantic-ui-css/semantic.min.css';
 
-import React from 'react';
-import PropTypes from 'prop-types';
+import browser from 'webextension-polyfill';
+
+import React, { useState } from 'react';
 
 import {
   Icon,
+  Loader,
 } from 'semantic-ui-react';
 
 import Review from './Review';
 import Shelves from './Shelves';
 import AddShelvesButton from './AddShelvesButton';
+import useAsyncEffect from '../utilities/useAsyncEffect';
+import identifyAuthor from './identifyAuthor';
+import identifyISBN13 from './identifyISBN13';
+import identifyTitle from './identifyTitle';
 
-function App({
-  bookId,
-  isbn,
-  bookReviewStatistics,
-  bookReview,
-}) {
+export default function App() {
+  const [
+    bookId,
+    setBookId,
+  ] = useState(null);
+
+  const [
+    bookReviewStatistics,
+    setBookReviewStatistics,
+  ] = useState(null);
+
+  const [
+    bookReview,
+    setBookReview,
+  ] = useState(null);
+
+  useAsyncEffect(async () => {
+    const isbn = await identifyISBN13();
+    if (isbn) {
+      const port = browser.runtime.connect({ name: 'BOOK_PAGE_DATA' });
+      port.postMessage({ isbn });
+      port.onMessage.addListener((message) => {
+        const {
+          bookId: BookId,
+          bookReview: BookReview,
+          bookReviewStatistics: BookReviewStatistics,
+        } = message;
+        setBookId(BookId);
+        setBookReviewStatistics(BookReviewStatistics);
+        setBookReview(BookReview);
+      });
+    } else {
+      const title = identifyTitle();
+      const author = identifyAuthor();
+
+      if (title && author) {
+        const port = browser.runtime.connect({ name: 'BOOK_PAGE_DATA_FROM_SEARCH' });
+        port.postMessage({ title, author });
+        port.onMessage.addListener((message) => {
+          const {
+            bookId: BookId,
+            bookReview: BookReview,
+            bookReviewStatistics: BookReviewStatistics,
+          } = message;
+          setBookId(BookId);
+          setBookReviewStatistics(BookReviewStatistics);
+          setBookReview(BookReview);
+        });
+      }
+    }
+  });
+
+  const hasData = bookId && bookReviewStatistics;
+  const hasShelves = bookReview && bookReview.shelves;
+
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
       <Icon name="goodreads" size="big" />
-      <AddShelvesButton bookId={bookId} />
-      <Review
-        isbn={isbn}
-        bookId={bookId}
-        bookReviewStatistics={bookReviewStatistics}
-      />
       {
-        bookReview
-          && bookReview.shelves
-          && <Shelves shelves={bookReview.shelves} />
+        hasData
+          && (
+            <React.Fragment>
+              <AddShelvesButton bookId={bookId} />
+              <Review
+                bookId={bookId}
+                bookReviewStatistics={bookReviewStatistics}
+              />
+              { hasShelves && <Shelves shelves={bookReview.shelves} /> }
+            </React.Fragment>
+          )
+      }
+      {
+        !hasData
+          && (
+            <Loader size="mini" active inline />
+          )
       }
     </div>
   );
 }
-
-App.propTypes = {
-  bookId: PropTypes.number.isRequired,
-  bookReview: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    book: PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      isbn: PropTypes.number.isRequired,
-      isbn13: PropTypes.number.isRequired,
-    }).isRequired,
-    dateAdded: PropTypes.instanceOf(Date).isRequired,
-    startedAt: PropTypes.instanceOf(Date),
-    shelves: PropTypes.arrayOf(PropTypes.shape({
-      id: PropTypes.number.isRequired,
-      name: PropTypes.string.isRequired,
-    })).isRequired,
-  }),
-  isbn: PropTypes.number.isRequired,
-  bookReviewStatistics: PropTypes.shape({
-    averageRating: PropTypes.number,
-    reviewsCount: PropTypes.number,
-  }).isRequired,
-};
-
-App.defaultProps = {
-  bookReview: null,
-};
-
-export default App;
