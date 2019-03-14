@@ -9,7 +9,7 @@ import {
 
 import ShelfNames from './data/constants/ShelfNames';
 
-function AddShelvesButton({ bookId }) {
+function AddShelvesButton({ bookId, currentShelfNames }) {
   return (
     <Popup trigger={<Button icon={<Icon name="add" />} size="mini" compact />} flowing hoverable>
       <Form>
@@ -24,6 +24,7 @@ function AddShelvesButton({ bookId }) {
                       label={shelfName}
                       value={shelfName}
                       name="shelves"
+                      checked={currentShelfNames.includes(shelfName)}
                       onClick={() => chrome.runtime.sendMessage({ method: 'ADD_BOOK_TO_SHELF', data: { shelfName, bookId } })}
                     />
                   );
@@ -37,6 +38,11 @@ function AddShelvesButton({ bookId }) {
 
 AddShelvesButton.propTypes = {
   bookId: PropTypes.number.isRequired,
+  currentShelfNames: PropTypes.arrayOf(PropTypes.string),
+};
+
+AddShelvesButton.defaultProps = {
+  currentShelfNames: [],
 };
 
 export default AddShelvesButton;
