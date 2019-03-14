@@ -31,6 +31,7 @@ export default function createClient({ jwt }) {
       },
       shelves: {
         addBook: ({ shelfName, bookId }) => instance.post(`/user/shelves/${shelfName}/books`, { bookId }),
+        removeBook: ({ shelfName, bookId }) => instance.delete(`/user/shelves/${shelfName}/books/${bookId}`),
       },
     },
   };

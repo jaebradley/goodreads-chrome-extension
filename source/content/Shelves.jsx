@@ -2,9 +2,10 @@ import React from 'react';
 
 import PropTypes from 'prop-types';
 import {
-  Icon,
   Label,
 } from 'semantic-ui-react';
+
+import Shelf from './Shelf';
 
 // TODO: @jaebradley consider assigning custom colors for fixed shelves
 const COLORS = [
@@ -23,18 +24,19 @@ const COLORS = [
   'black',
 ];
 
-function Shelves({ shelves }) {
+function Shelves({ shelves, bookId }) {
   return (
     <Label.Group tag size="mini">
       {
         shelves.map((shelf, index) => {
           const colorIndex = index % COLORS.length;
+          const color = COLORS[colorIndex];
           return (
-            <Label tag color={COLORS[colorIndex]}>
-              <Icon name="book" />
-              { shelf.name }
-              <Icon name="delete" />
-            </Label>
+            <Shelf
+              bookId={bookId}
+              color={color}
+              name={shelf.name}
+            />
           );
         })
       }
@@ -43,6 +45,7 @@ function Shelves({ shelves }) {
 }
 
 Shelves.propTypes = {
+  bookId: PropTypes.number.isRequired,
   shelves: PropTypes.arrayOf(
     PropTypes.shape({
       id: PropTypes.number.isRequired,

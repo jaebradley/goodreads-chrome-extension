@@ -86,7 +86,7 @@ export default function App() {
                 bookId={bookId}
                 bookReviewStatistics={bookReviewStatistics}
               />
-              { hasShelves && <Shelves shelves={bookReview.shelves} /> }
+              { hasShelves && <Shelves shelves={bookReview.shelves} bookId={bookId} /> }
             </React.Fragment>
           )
       }
