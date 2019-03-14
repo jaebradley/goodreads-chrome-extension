@@ -15,6 +15,15 @@ chrome.runtime.onMessage.addListener(async (obj) => {
       } = await browser.storage.sync.get();
       const client = createClient({ jwt });
       await client.user.shelves.addBook({ shelfName: obj.data.shelfName, bookId: obj.data.bookId });
+    } else if (obj.method === 'REMOVE_BOOK_FROM_SHELF') {
+      const {
+        jwt,
+      } = await browser.storage.sync.get();
+      const client = createClient({ jwt });
+      await client.user.shelves.removeBook({
+        shelfName: obj.data.shelfName,
+        bookId: obj.data.bookId,
+      });
     }
   }
 });
