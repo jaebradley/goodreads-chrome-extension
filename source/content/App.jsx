@@ -67,10 +67,12 @@ export default function App() {
         });
       }
     }
-  });
+  }, []);
 
   const hasData = bookId && bookReviewStatistics;
   const hasShelves = bookReview && bookReview.shelves;
+
+  const currentShelfNames = hasShelves ? bookReview.shelves.map(shelf => shelf.name) : [];
 
   return (
     <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -79,7 +81,7 @@ export default function App() {
         hasData
           && (
             <React.Fragment>
-              <AddShelvesButton bookId={bookId} />
+              <AddShelvesButton bookId={bookId} currentShelfNames={currentShelfNames} />
               <Review
                 bookId={bookId}
                 bookReviewStatistics={bookReviewStatistics}
