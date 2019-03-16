@@ -24,7 +24,7 @@ const COLORS = [
   'black',
 ];
 
-function Shelves({ shelves, bookId }) {
+function Shelves({ shelves, bookId, onDeleteClick }) {
   return (
     <Label.Group tag size="mini">
       {
@@ -36,6 +36,7 @@ function Shelves({ shelves, bookId }) {
               bookId={bookId}
               color={color}
               name={shelf.name}
+              onDeleteClick={onDeleteClick}
             />
           );
         })
