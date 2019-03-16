@@ -81,7 +81,11 @@ export default function App() {
         hasData
           && (
             <React.Fragment>
-              <AddShelvesButton bookId={bookId} currentShelfNames={currentShelfNames} />
+              <AddShelvesButton
+                bookId={bookId}
+                currentShelfNames={currentShelfNames}
+                onAddClick={setBookReview}
+              />
               <Review
                 bookId={bookId}
                 bookReviewStatistics={bookReviewStatistics}

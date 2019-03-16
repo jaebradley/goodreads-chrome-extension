@@ -8,8 +8,9 @@ import {
 } from 'semantic-ui-react';
 
 import ShelfNames from './data/constants/ShelfNames';
+import addBookToShelf from './hooks/addBookToShelf';
 
-function AddShelvesButton({ bookId, currentShelfNames }) {
+function AddShelvesButton({ bookId, currentShelfNames, onAddClick }) {
   return (
     <Popup trigger={<Button icon={<Icon name="add" />} size="mini" compact />} flowing hoverable>
       <Form>
@@ -19,13 +20,14 @@ function AddShelvesButton({ bookId, currentShelfNames }) {
                 .keys(ShelfNames)
                 .map((key) => {
                   const shelfName = ShelfNames[key];
+                  const onClick = addBookToShelf({ shelfName, bookId, onAdd: onAddClick });
                   return (
                     <Form.Radio
                       label={shelfName}
                       value={shelfName}
                       name="shelves"
                       checked={currentShelfNames.includes(shelfName)}
-                      onClick={() => chrome.runtime.sendMessage({ method: 'ADD_BOOK_TO_SHELF', data: { shelfName, bookId } })}
+                      onClick={onClick}
                     />
                   );
                 })
