@@ -10,12 +10,6 @@ chrome.runtime.onMessage.addListener(async (obj) => {
   if (obj) {
     if (obj.method === 'login') {
       await login();
-    } else if (obj.method === 'ADD_BOOK_TO_SHELF') {
-      const {
-        jwt,
-      } = await browser.storage.sync.get();
-      const client = createClient({ jwt });
-      await client.user.shelves.addBook({ shelfName: obj.data.shelfName, bookId: obj.data.bookId });
     }
   }
 });
@@ -44,6 +38,19 @@ chrome.runtime.onConnect.addListener(async (port) => {
         } = await browser.storage.sync.get();
         const data = await getSingleBookPageDataFromSearch({ jwt, title, author });
         port.postMessage(data);
+      });
+    } else if (port.name === 'ADD_BOOK_TO_SHELF') {
+      port.onMessage.addListener(async (message) => {
+        const {
+          shelfName,
+          bookId,
+        } = message;
+        const {
+          jwt,
+        } = await browser.storage.sync.get();
+        const client = createClient({ jwt });
+        const response = await client.user.shelves.addBook({ shelfName, bookId });
+        port.postMessage(response.data);
       });
     } else if (port.name === 'REMOVE_BOOK_FROM_SHELF') {
       port.onMessage.addListener(async (message) => {

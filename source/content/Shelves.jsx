@@ -53,6 +53,11 @@ Shelves.propTypes = {
       name: PropTypes.string.isRequired,
     }).isRequired,
   ).isRequired,
+  onDeleteClick: PropTypes.func,
+};
+
+Shelves.defaultProps = {
+  onDeleteClick: () => {},
 };
 
 export default Shelves;
