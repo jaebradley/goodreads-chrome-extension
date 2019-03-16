@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import {
   Icon,
@@ -6,17 +6,16 @@ import {
 } from 'semantic-ui-react';
 
 import ShelfNames from './data/constants/ShelfNames';
+import deleteBookFromShelf from './hooks/deleteBookFromShelf';
 
-function Shelf({ color, name, bookId }) {
-  const onClick = useCallback(
-    () => chrome.runtime.sendMessage({
-      method: 'REMOVE_BOOK_FROM_SHELF',
-      data: {
-        shelfName: name,
-        bookId,
-      },
-    }),
-  );
+function Shelf({
+  color,
+  name,
+  bookId,
+  onDeleteClick,
+}) {
+  const onClick = deleteBookFromShelf({ name, bookId, onDelete: onDeleteClick });
+
   return (
     <Label tag color={color}>
       <Icon name="book" />
@@ -34,6 +33,7 @@ Shelf.propTypes = {
   color: PropTypes.string.isRequired,
   name: PropTypes.string.isRequired,
   bookId: PropTypes.number.isRequired,
+  onDeleteClick: PropTypes.func.isRequired,
 };
 
 export default Shelf;
