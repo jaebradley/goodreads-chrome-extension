@@ -12,7 +12,7 @@ export default function injectIntoSearchPage() {
       const appDiv = document.createElement('div');
       appDiv.setAttribute('id', `goodreads-extension-${index}`);
       element.parentNode.insertBefore(appDiv, element.nextSibling);
-      ReactDOM.render(<SearchResults />, appDiv);
+      ReactDOM.render(<SearchResults node={appDiv} />, appDiv);
     });
   }
 }
